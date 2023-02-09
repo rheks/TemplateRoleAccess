@@ -15,7 +15,7 @@ namespace TemplateRoleAccess.API.Models.Entities
         public virtual Employee? Employee { get; set; }
 
         // Many to many
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<AccountRole>? AccountRoles { get; set; }
     }
 }

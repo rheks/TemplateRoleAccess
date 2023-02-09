@@ -53,7 +53,7 @@ builder.Services.AddScoped<RoleRepository>();
 // Settings Swagger UI
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Role Access API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Template Role Access API", Version = "v1" });
     var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
     options.IncludeXmlComments(xmlPath);
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -78,6 +78,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseAuthorization();
 

@@ -28,13 +28,13 @@ namespace TemplateRoleAccess.API.Models.Entities
         public string? Manager_Id { get; set; }
 
         // Many employees have one departement - Many To One
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Departement? Departements { get; set; }
         [ForeignKey("Departements")]
         public int? Departement_Id { get; set; }
 
         // One employee have one account  - One To One
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Account? Account { get; set; }
 
     }

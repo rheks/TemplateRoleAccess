@@ -19,5 +19,32 @@ namespace TemplateRoleAccess.API.Controllers.Data
         {
             _departementRepository = departementRepository;
         }
+
+        [HttpGet]
+        [Route("GetDataManager")]
+        //[Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> GetDataManager()
+        {
+            var response = await _departementRepository.GetDataManager();
+            return response.Count() switch
+            {
+                0 => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = response }),
+                >= 1 => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"{response.Count()} data found", Data = response }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, message = "Internal server error", Data = response }),
+            };
+        }
+        
+        [HttpGet]
+        [Route("GetDataManager/{id}")]
+        //[Authorize(Roles = "Admin, Manager")]
+        public virtual async Task<IActionResult> GetDataManager(int id)
+        {
+            var response = await _departementRepository.GetDataManager(id);
+            return response switch
+            {
+                null => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = response }),
+                _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"Data with Id {id} found", Data = response }),
+            };
+        }
     }
 }

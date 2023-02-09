@@ -4,6 +4,9 @@ using TemplateRoleAccess.API.Models.Entities;
 using TemplateRoleAccess.API.Repositories.General;
 using TemplateRoleAccess.API.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using EFCore.BulkExtensions;
 
 namespace TemplateRoleAccess.API.Repositories.Data
 {
@@ -89,12 +92,131 @@ namespace TemplateRoleAccess.API.Repositories.Data
             response = await _appDbContext.SaveChangesAsync();
 
             var actsRole = new AccountRole();
-            //actsRole.RoleId = registerEmployee.Role_Id;
-            
-            actsRole.RoleId = 3;
+
+            actsRole.RoleId = registerEmployee.Role_Id;
             actsRole.AccountNIK = newNIK;
             await _appDbContext.AddAsync(actsRole);
             response = await _appDbContext.SaveChangesAsync();
+
+            return response;
+        }
+        
+        public async Task<int> RegisterUpdate(RegisterEmployeeVM registerEmployee)
+        {
+            var checkEmail = await _appDbContext.Employees.Where(e => e.Email == registerEmployee.Email).Take(2).ToListAsync();
+            var checkPhone = await _appDbContext.Employees.Where(e => e.Phone == registerEmployee.Phone).Take(2).ToListAsync();
+
+            if (checkEmail.Count() > 1)
+            {
+                return 2;
+            }
+            else if (checkPhone.Count() > 1)
+            {
+                return 3;
+            }
+
+            Employee empl = _appDbContext.Employees.Find(registerEmployee.NIK);
+            empl.NIK = registerEmployee.NIK;
+            empl.FirstName = registerEmployee.FirstName;
+            empl.LastName = registerEmployee.LastName;
+            empl.BirthDate = registerEmployee.BirthDate;
+            empl.Gender = registerEmployee.Gender;
+            empl.Phone = registerEmployee.Phone;
+            empl.Email = registerEmployee.Email;
+            empl.Salary = registerEmployee.Salary;
+            empl.Departement_Id = registerEmployee.Departement_Id == 0 ? null : registerEmployee.Departement_Id;
+            empl.Manager_Id = registerEmployee.Manager_Id;
+            
+            //_appDbContext.Entry(empl).State = EntityState.Modified;
+            _appDbContext.Update(empl);
+            var response = await _appDbContext.SaveChangesAsync();
+
+            AccountRole actsRole = await _appDbContext.AccountRoles.SingleAsync(ar => ar.AccountNIK == registerEmployee.NIK);
+            actsRole.RoleId = registerEmployee.Role_Id;
+            actsRole.AccountNIK = registerEmployee.NIK;
+            
+            _appDbContext.Update(actsRole);
+            response = await _appDbContext.SaveChangesAsync();
+
+            return response;
+        }
+        
+        public async Task<int> RegisterDelete(string nik)
+        {
+            Employee empl = await _appDbContext.Employees.FindAsync(nik);
+            List<Employee> allEmpl = await _appDbContext.Employees.Where(e => e.Manager_Id == nik).ToListAsync();
+
+            for(int i = 0; i < allEmpl.Count(); i++)
+            {
+                allEmpl[i].Manager_Id = null;
+            }
+            
+            await _appDbContext.BulkUpdateAsync(allEmpl);
+
+            AccountRole actsRole = await _appDbContext.AccountRoles.SingleAsync(ar => ar.AccountNIK == nik);
+            Departement dep = await _appDbContext.Departements.SingleAsync(ar => ar.Manager_Id == nik);
+
+            dep.Manager_Id = null;
+            _appDbContext.Update(dep);
+            var response = await _appDbContext.SaveChangesAsync();
+
+            _appDbContext.Remove(actsRole);
+            response = await _appDbContext.SaveChangesAsync();
+            
+            _appDbContext.Remove(empl);
+            response = await _appDbContext.SaveChangesAsync();
+
+            return response;
+        }
+        
+        public async Task<IEnumerable<GetSpecificEmployeesVM>> GetSpecificEmployees()
+        {
+            var response = await (from e in _appDbContext.Employees
+                           join d in _appDbContext.Departements on e.Departement_Id equals d.Id
+                           join ar in _appDbContext.AccountRoles on e.NIK equals ar.AccountNIK
+                           join r in _appDbContext.Roles on ar.RoleId equals r.Id
+                           select new GetSpecificEmployeesVM
+                           {
+                               NIK = e.NIK,
+                               FirstName = e.FirstName,
+                               LastName = e.LastName,
+                               BirthDate = e.BirthDate,
+                               Gender = e.Gender,
+                               Phone = e.Phone,
+                               Email = e.Email,
+                               Salary = e.Salary,
+                               Role_Id = ar.RoleId,
+                               Role_Name = r.Name,
+                               Departement_Id = d.Id,
+                               Departement_Name = d.Name,
+                               Manager_Id = e.Manager_Id
+                           }).ToListAsync();
+
+            return response;
+        }
+        
+        public async Task<GetSpecificEmployeesVM> GetSpecificEmployees(string nik)
+        {
+            var response = await (from e in _appDbContext.Employees where e.NIK == nik
+                           join d in _appDbContext.Departements on e.Departement_Id equals d.Id
+                           join ar in _appDbContext.AccountRoles on e.NIK equals ar.AccountNIK
+                           join r in _appDbContext.Roles on ar.RoleId equals r.Id
+                           select new GetSpecificEmployeesVM
+                           {
+                               NIK = e.NIK,
+                               FirstName = e.FirstName,
+                               LastName = e.LastName,
+                               BirthDate = e.BirthDate,
+                               Gender = e.Gender,
+                               Phone = e.Phone,
+                               Email = e.Email,
+                               Salary = e.Salary,
+                               Role_Id = ar.RoleId,
+                               Role_Name = r.Name,
+                               Departement_Id = d.Id,
+                               Departement_Name = d.Name,
+                               Manager_Id = e.Manager_Id
+                           }).FirstOrDefaultAsync();
 
             return response;
         }
