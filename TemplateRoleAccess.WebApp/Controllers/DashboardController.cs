@@ -18,5 +18,10 @@ namespace TemplateRoleAccess.WebApp.Controllers
         {
             return View();
         }
+        
+        public IActionResult Roles()
+        {
+            return View();
+        }
     }
 }
