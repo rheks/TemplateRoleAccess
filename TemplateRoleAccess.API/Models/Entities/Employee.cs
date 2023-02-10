@@ -23,19 +23,19 @@ namespace TemplateRoleAccess.API.Models.Entities
 
         // Self Reference of Table Employee - One To Many
         [JsonIgnore]
-        public virtual Employee? ManagerEmployees { get; set; }
+        public virtual Employee ManagerEmployees { get; set; }
         [ForeignKey("ManagerEmployees")]
         public string? Manager_Id { get; set; }
 
         // Many employees have one departement - Many To One
         //[JsonIgnore]
-        public virtual Departement? Departements { get; set; }
+        public virtual Departement Departements { get; set; }
         [ForeignKey("Departements")]
         public int? Departement_Id { get; set; }
 
         // One employee have one account  - One To One
         //[JsonIgnore]
-        public virtual Account? Account { get; set; }
+        public virtual Account Account { get; set; }
 
     }
 

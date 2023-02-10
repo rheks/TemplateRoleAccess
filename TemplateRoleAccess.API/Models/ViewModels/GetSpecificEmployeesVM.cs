@@ -16,10 +16,10 @@ namespace TemplateRoleAccess.API.Models.ViewModels
         public string Phone { get; set; }
         public string Email { get; set; }
         public int Salary { get; set; }
-        public int Role_Id { get; set; }
-        public string Role_Name { get; set; }
-        public int Departement_Id { get; set; }
-        public string Departement_Name { get; set; }
-        public string Manager_Id { get; set; }
+        public int? Role_Id { get; set; }
+        public string? Role_Name { get; set; }
+        public int? Departement_Id { get; set; }
+        public string? Departement_Name { get; set; }
+        public string? Manager_Id { get; set; }
     }
 }

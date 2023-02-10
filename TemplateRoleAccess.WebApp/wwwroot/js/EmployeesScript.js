@@ -117,8 +117,7 @@ $("#InputDepartement").on('propertychange input', () => {
             console.log(obj)
             $("#InputManagerId").html("");
             $("#InputManagerId").removeAttr("disabled");
-            $("#InputManagerId").append(`<option value="" selected disabled>Choose The Manager</option>`)
-            $("#InputManagerId").append(`<option value="${obj.manager_NIK}">${obj.manager_Name}</option>`)
+            $("#InputManagerId").append(`<option value="${obj.manager_NIK}" selected>${obj.manager_Name}</option>`)
         },
         "error": (e) => {
             $("#InputManagerId").html("");

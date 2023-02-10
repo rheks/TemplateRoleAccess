@@ -12,6 +12,6 @@ namespace TemplateRoleAccess.API.Models.Entities
 
         // Many to many
         [JsonIgnore]
-        public virtual ICollection<AccountRole>? AccountRoles { get; set; }
+        public virtual ICollection<AccountRole> AccountRoles { get; set; }
     }
 }

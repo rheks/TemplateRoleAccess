@@ -12,10 +12,11 @@ namespace TemplateRoleAccess.API.Models.Entities
         public string? Password { get; set; }
 
         // One Account have one employee  - One To One
-        public virtual Employee? Employee { get; set; }
+        [JsonIgnore]
+        public virtual Employee Employee { get; set; }
 
         // Many to many
-        //[JsonIgnore]
-        public virtual ICollection<AccountRole>? AccountRoles { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<AccountRole> AccountRoles { get; set; }
     }
 }

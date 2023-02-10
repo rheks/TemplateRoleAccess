@@ -35,6 +35,7 @@ namespace TemplateRoleAccess.API.Repositories.General
         public async Task<int> Update(Entity entity)
         {
             _entities.Update(entity);
+            //_appDbContext.Entry(entity).State = EntityState.Modified;
             return await _appDbContext.SaveChangesAsync();
         }
 

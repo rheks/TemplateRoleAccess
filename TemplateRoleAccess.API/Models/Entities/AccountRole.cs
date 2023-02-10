@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TemplateRoleAccess.API.Models.Entities
@@ -8,11 +9,13 @@ namespace TemplateRoleAccess.API.Models.Entities
     {
         [ForeignKey("Roles")]
         public int RoleId { get; set; }
-        public virtual Role? Roles { get; set; }
+        [JsonIgnore]
+        public virtual Role Roles { get; set; }
 
         [ForeignKey("Accounts")]
         public string? AccountNIK { get; set; }
-        public virtual Account? Accounts { get; set; }
+        [JsonIgnore]
+        public virtual Account Accounts { get; set; }
     }
 
 }

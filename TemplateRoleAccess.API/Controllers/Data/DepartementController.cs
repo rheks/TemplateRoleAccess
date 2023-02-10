@@ -46,5 +46,29 @@ namespace TemplateRoleAccess.API.Controllers.Data
                 _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"Data with Id {id} found", Data = response }),
             };
         }
+
+        [HttpPut]
+        [Route("UpdateSpecificDepartement")]
+        public async Task<IActionResult> DepartementUpdate(Departement departement)
+        {
+            var response = await _departementRepository.DepartementUpdate(departement);
+            return response switch
+            {
+                0 or 1 => StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data departement successfully updated", Data = response }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response })
+            };
+        }
+        
+        [HttpDelete]
+        [Route("DeleteSpecificDepartement/{id}")]
+        public async Task<IActionResult> DepartementDelete([FromRoute] int id)
+        {
+            var response = await _departementRepository.DepartementDelete(id);
+            return response switch
+            {
+                0 or 1 => StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data departement successfully deleted", Data = response }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response })
+            };
+        }
     }
 }

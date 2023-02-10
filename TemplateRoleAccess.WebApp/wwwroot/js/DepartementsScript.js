@@ -52,19 +52,22 @@ function allEmployees() {
         "contentType": "application/json;charset=utf-8",
         "success": (result) => {
             var obj = result.data
-            $("#InputHOD").html("")
+            $("#InputHOD").html("");
+            $("#InputHOD").removeAttr("disabled");
             $("#InputHOD").append(`<option value="" selected disabled>Choose The Manager</option>`)
             for (let i = 0; i < obj.length; i++) {
                 console.log(obj[i].firstName + ": " + obj[i].nik)
                 
-                if (obj[i].departements.niK_HoD != obj[i].nik) {
+                if (obj[i].manager_Id != obj[i].nik) {
                     $("#InputHOD").append(`<option value="${obj[i].nik}">${obj[i].firstName} ${obj[i].lastName}</option>`)
                 }
                 $("#InputHOD").append(`<option value="${obj[i].nik}" disabled hidden>${obj[i].firstName} ${obj[i].lastName}</option>`)
             }
         },
         "error": (e) => {
-            alert(e.responseText)
+            $("#InputHOD").html("");
+            $("#InputHOD").attr("disabled", "disabled");
+            $("#InputHOD").append(`<option value="" selected disabled>Data not available</option>`)
         }
     })
 
@@ -76,11 +79,13 @@ $("#ModalCreate").click(() => {
     $("#buttonSubmit").attr("onclick", "Create()");
     $("#buttonSubmit").attr("class", "btn btn-success");
     $("#buttonSubmit").html("Create");
+    $("#CreateModalLabel").html("Create New Departement");
 
     $("#InputIdDepartement").val("");
     $("#InputDepartementName").val("");
-    $("#InputHOD").val("");
 
+    $("#InputHOD").html("");
+    $("#InputHOD").attr("disabled", "disabled");
 
     $("#BodyModal > form > div:nth-child(3)").hide()
     $("#InputDepartementName").attr("placeholder", "Input Departement Name");
@@ -104,7 +109,7 @@ function Create() {
     if (validateForm) {
         var Departement = {};
         Departement.Name = $("#InputDepartementName").val();
-        Departement.niK_HoD = parseInt($("#InputHOD").val());
+        Departement.manager_Id = parseInt($("#InputHOD").val());
 
         console.log(Departement)
 
@@ -120,7 +125,7 @@ function Create() {
                         title: 'Success',
                         text: 'Data successfully created',
                     })
-                    allEmployees()
+
                     $('#DepartementsTable').DataTable().ajax.reload();
                     $('#CreateModal').modal("hide");
                 } else {
@@ -144,6 +149,9 @@ function Create() {
 
 function GetById(id) {
     // debugger;
+
+    $("#BodyModal > form > div:nth-child(3)").show()
+
     $.ajax({
         "type": "GET",
         "url": urlBackend + "/departement/" + id,
@@ -154,15 +162,17 @@ function GetById(id) {
 
             console.log(obj)
 
+            allEmployees()
+
             // debugger;
             $('#InputIdDepartement').val(obj.id);
             $('#InputDepartementName').val(obj.name);
-            $('#InputHOD').val(obj.niK_HoD);
+            $('#InputHOD').val(obj.manager_Id);
 
-            $("#BodyModal > form > div:nth-child(3)").hide()
             $("#buttonSubmit").attr("onclick", "Update()");
             $("#buttonSubmit").attr("class", "btn btn-warning");
             $("#buttonSubmit").html("Update");
+            $("#CreateModalLabel").html("Update New Departement");
             $('#CreateModal').modal("show");
         },
         error: function (errormesage) {
@@ -191,12 +201,12 @@ function Update() {
         var Departement = {};
         Departement.Id = $("#InputIdDepartement").val();
         Departement.Name = $("#InputDepartementName").val();
-        Departement.niK_HoD = parseInt($("#InputHOD").val());
+        Departement.manager_Id = parseInt($("#InputHOD").val());
     
         console.log(Departement)
     
         $.ajax({
-            "url": urlBackend + "/departement",
+            "url": urlBackend + "/departement/UpdateSpecificDepartement",
             "type": "PUT",
             "data": JSON.stringify(Departement),
             "contentType": "application/json; charset=utf-8",
@@ -260,7 +270,7 @@ function ConfirmDelete(id) {
 
 function Delete(id) {
     $.ajax({
-        "url": urlBackend + "/Departement/" + id,
+        "url": urlBackend + "/departement/DeleteSpecificDepartement/" + id,
         "type": "DELETE",
         "dataType": "json",
         "success": (result) => {
