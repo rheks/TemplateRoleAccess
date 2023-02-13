@@ -21,6 +21,19 @@ namespace TemplateRoleAccess.API.Controllers.Data
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override async Task<IActionResult> Get()
+        {
+            var response = await _departementRepository.Get();
+            return response.Count() switch
+            {
+                0 => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = response }),
+                >= 1 => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"{response.Count()} data found", Data = response }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, message = "Internal server error", Data = response })
+            };
+        }
+
+        [HttpGet]
         [Route("GetDataManager")]
         //[Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> GetDataManager()

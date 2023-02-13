@@ -20,6 +20,19 @@ namespace TemplateRoleAccess.API.Controllers.Data
             _employeeRepository = employeeRepository;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override async Task<IActionResult> Get()
+        {
+            var response = await _employeeRepository.Get();
+            return response.Count() switch
+            {
+                0 => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = response }),
+                >= 1 => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"{response.Count()} data found", Data = response }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, message = "Internal server error", Data = response })
+            };
+        }
+
         [HttpPost]
         [Route("Register")]
         //[Authorize(Roles = "Admin")]
@@ -60,19 +73,6 @@ namespace TemplateRoleAccess.API.Controllers.Data
                 0 => StatusCode(400, new { Status = HttpStatusCode.BadRequest, Message = "Data employee failed to delete", Data = response }),
                 1 => StatusCode(201, new { Status = HttpStatusCode.Created, Message = "Data employee successfully deleted", Data = response }),
                 _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, Message = "Internal server error", Data = response })
-            };
-        }
-
-        [HttpGet]
-        //[Authorize(Roles = "Admin, Manager")]
-        public override async Task<IActionResult> Get()
-        {
-            var response = await _employeeRepository.Get();
-            return response.Count() switch
-            {
-                0 => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = response }),
-                >= 1 => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"{response.Count()} data found", Data = response }),
-                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, message = "Internal server error", Data = response })
             };
         }
         

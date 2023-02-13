@@ -23,9 +23,41 @@
     <!-- Font Awesome -->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
 
+    <script>
+
+        window.onload = function (e) {
+            if (
+                sessionStorage.getItem("nik") == null ||
+                sessionStorage.getItem("email") == null ||
+                sessionStorage.getItem("name") == null ||
+                sessionStorage.getItem("token") == null
+            ) {
+                window.location.href = urlFrontend + "auth/login";
+            }
+        }
+    </script>
+    <style>
+        #pageLoader {
+            position: absolute;
+            min-height: 100vh;
+            width: 100%;
+            background-color: #fff;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        setTimeout(hideLoader, 500)
+        function hideLoader(){
+            let loader = document.getElementById("pageLoader").style.display = "none";
+        }
+
+        document.attachEvent("onreadystatechange", hideLoader());
+    </script>
 </head>
 
 <body id="page-top">
+
+    <div id="pageLoader"></div>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -78,7 +110,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@ViewBag.name (@ViewBag.nik)</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="showProfile"></span>
                                 <img class="img-profile rounded-circle"
                                      src="~/img/undraw_profile.svg">
                             </a>
@@ -98,7 +130,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>*@
-                                <a class="dropdown-item" asp-controller="Auth" asp-action="Logout">
+                                <a class="dropdown-item" onclick="removeLSWithRedirect();" style="cursor: pointer;">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -150,7 +182,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <p class="btn btn-primary" onclick="removeLSWithRedirect();">Logout</p>
                 </div>
             </div>
         </div>
@@ -172,6 +204,18 @@
     
     <script>
         let urlBackend = "https://localhost:7010/api";
+        let urlFrontend = "https://localhost:7183/";
+        
+        $("#showProfile").html(sessionStorage.getItem("name"))
+
+        function removeLSWithRedirect(){
+            sessionStorage.removeItem("nik")
+            sessionStorage.removeItem("email")
+            sessionStorage.removeItem("name")
+            sessionStorage.removeItem("token")
+
+            window.location.href = urlFrontend + "auth/login"
+        }
     </script>
 
     @RenderSection("Scripts", required: false)

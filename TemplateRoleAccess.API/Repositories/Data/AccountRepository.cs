@@ -61,6 +61,7 @@ namespace TemplateRoleAccess.API.Repositories.Data
             return new UserLoginVM
             {
                 NIK = response.Accounts.Employee.NIK,
+                Name = response.Accounts.Employee.FirstName + " " + response.Accounts.Employee.LastName,
                 Email = response.Accounts.Employee.Email,
                 Role = response.Roles.Name,
                 Token = Token,

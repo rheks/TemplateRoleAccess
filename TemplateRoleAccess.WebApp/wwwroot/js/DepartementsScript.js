@@ -9,6 +9,9 @@ $(document).ready(function () {
             "type": "GET",
             "datatype": "json",
             "dataSrc": "data",
+            "headers": {
+                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+            },
             "error": (e) => {
                 document.querySelector("#DepartementsTable > tbody > tr > td").innerHTML = "Data Not Available";
             },

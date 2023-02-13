@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"] | Template Role Access</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/vendor/login-template/css/style.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    
+    <script>
+        window.onload = function (e) {
+            if (
+                sessionStorage.getItem("nik") != null ||
+                sessionStorage.getItem("email") != null ||
+                sessionStorage.getItem("name") != null ||
+                sessionStorage.getItem("token") != null
+            ) {
+                window.location.href = urlFrontend + "dashboard/index";
+            }
+        }
+    </script>
+    <style>
+        #pageLoader {
+            position: absolute;
+            min-height: 100vh;
+            width: 100%;
+            background-color: #fff;
+            z-index: 999;
+        }
+    </style>
+    <script>
+        setTimeout(hideLoader, 500)
+        function hideLoader() {
+            let loader = document.getElementById("pageLoader").style.display = "none";
+        }
+
+        document.attachEvent("onreadystatechange", hideLoader());
+    </script>
+</head>
+<body>
+    <div id="pageLoader"></div>
+    <div class="spinner" id="loadingSpinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                @RenderBody()
+            </div>
+        </div>
+    </section>
+    @*<script src="~/vendor/login-template/js/jquery.min.js"></script>*@
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/vendor/login-template/js/popper.js"></script>
+    <script src="~/vendor/login-template/js/bootstrap.min.js"></script>
+    <script src="~/vendor/login-template/js/main.js"></script>
+    <script defer
+            src="https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993"
+            integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA=="
+            data-cf-beacon='{"rayId":"797310866a292f76","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.11.3","si":100}'
+            crossorigin="anonymous"></script>
+    <script>
+        let urlBackend = "https://localhost:7010/api";
+        let urlFrontend = "https://localhost:7183/";
+        $("#loadingSpinner").addClass("hide")
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

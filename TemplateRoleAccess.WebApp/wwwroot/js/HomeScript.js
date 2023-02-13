@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $('#tab-home').addClass("active")
 
     $.ajax({
@@ -7,6 +6,9 @@ $(document).ready(function () {
         "url": urlBackend + "/employee",
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
+        "headers": {
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+        },
         "success": function (result) {
             var obj = result.data;
 
@@ -22,6 +24,9 @@ $(document).ready(function () {
         "url": urlBackend + "/departement",
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
+        "headers": {
+            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+        },
         "success": function (result) {
             var obj = result.data;
 
