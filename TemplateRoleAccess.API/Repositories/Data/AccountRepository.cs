@@ -21,6 +21,17 @@ namespace TemplateRoleAccess.API.Repositories.Data
             _configuration = configuration;
         }
 
+        public async Task<int> UpdatePassword(Account account)
+        {
+            var acts = await _appDbContext.Accounts.SingleOrDefaultAsync(a => a.NIK == account.NIK);
+            acts.Password = BC.HashPassword(account.Password);
+
+            _appDbContext.Update(acts);
+            var response = await _appDbContext.SaveChangesAsync();
+
+            return response;
+        }
+
         public async Task<UserLoginVM> Login(LoginVM userLogin)
         {
             //var response = await _appDbContext.AccountRoles.SingleOrDefaultAsync(e => e.AccountNIK == userLogin.NIK);

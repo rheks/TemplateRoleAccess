@@ -19,8 +19,10 @@
 
                 sessionStorage.setItem("nik", response.nik)
                 sessionStorage.setItem("email", response.email)
+                sessionStorage.setItem("role", response.role)
                 sessionStorage.setItem("name", response.name)
                 sessionStorage.setItem("token", response.token)
+                sessionStorage.setItem("expired", response.tokenExpires)
 
                 window.location.href = urlFrontend + "dashboard/index";
             }

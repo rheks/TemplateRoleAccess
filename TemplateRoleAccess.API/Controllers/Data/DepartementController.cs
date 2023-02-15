@@ -21,7 +21,7 @@ namespace TemplateRoleAccess.API.Controllers.Data
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public override async Task<IActionResult> Get()
         {
             var response = await _departementRepository.Get();

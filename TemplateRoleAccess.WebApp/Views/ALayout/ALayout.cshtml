@@ -15,6 +15,7 @@
                 sessionStorage.getItem("nik") != null ||
                 sessionStorage.getItem("email") != null ||
                 sessionStorage.getItem("name") != null ||
+                sessionStorage.getItem("role") != null ||
                 sessionStorage.getItem("token") != null
             ) {
                 window.location.href = urlFrontend + "dashboard/index";
@@ -31,12 +32,13 @@
         }
     </style>
     <script>
-        setTimeout(hideLoader, 500)
         function hideLoader() {
             let loader = document.getElementById("pageLoader").style.display = "none";
         }
 
-        document.attachEvent("onreadystatechange", hideLoader());
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(hideLoader, 500)
+        });
     </script>
 </head>
 <body>

@@ -210,27 +210,6 @@ namespace TemplateRoleAccess.API.Repositories.Data
         
         public async Task<IEnumerable<GetSpecificEmployeesVM>> GetSpecificEmployees()
         {
-            //var response = await (from e in _appDbContext.Employees
-            //               join d in _appDbContext.Departements on e.Departement_Id equals d.Id
-            //               join ar in _appDbContext.AccountRoles on e.NIK equals ar.AccountNIK
-            //               join r in _appDbContext.Roles on ar.RoleId equals r.Id
-            //               select new GetSpecificEmployeesVM
-            //               {
-            //                   NIK = e.NIK,
-            //                   FirstName = e.FirstName,
-            //                   LastName = e.LastName,
-            //                   BirthDate = e.BirthDate,
-            //                   Gender = e.Gender,
-            //                   Phone = e.Phone,
-            //                   Email = e.Email,
-            //                   Salary = e.Salary,
-            //                   Role_Id = ar.RoleId,
-            //                   Role_Name = r.Name,
-            //                   Departement_Id = d.Id,
-            //                   Departement_Name = d.Name,
-            //                   Manager_Id = e.Manager_Id
-            //               }).ToListAsync();
-
             var response = await (from e in _appDbContext.Employees
                                   join d in _appDbContext.Departements on e.Departement_Id equals d.Id into ed
                                   from newEd in ed.DefaultIfEmpty()
@@ -261,27 +240,6 @@ namespace TemplateRoleAccess.API.Repositories.Data
         
         public async Task<GetSpecificEmployeesVM> GetSpecificEmployees(string nik)
         {
-            //var response = await (from e in _appDbContext.Employees where e.NIK == nik
-            //               join d in _appDbContext.Departements on e.Departement_Id equals d.Id
-            //               join ar in _appDbContext.AccountRoles on e.NIK equals ar.AccountNIK
-            //               join r in _appDbContext.Roles on ar.RoleId equals r.Id
-            //               select new GetSpecificEmployeesVM
-            //               {
-            //                   NIK = e.NIK,
-            //                   FirstName = e.FirstName,
-            //                   LastName = e.LastName,
-            //                   BirthDate = e.BirthDate,
-            //                   Gender = e.Gender,
-            //                   Phone = e.Phone,
-            //                   Email = e.Email,
-            //                   Salary = e.Salary,
-            //                   Role_Id = ar.RoleId,
-            //                   Role_Name = r.Name,
-            //                   Departement_Id = d.Id,
-            //                   Departement_Name = d.Name,
-            //                   Manager_Id = e.Manager_Id
-            //               }).FirstOrDefaultAsync();
-
             var response = await (from e in _appDbContext.Employees where e.NIK == nik
                                   join d in _appDbContext.Departements on e.Departement_Id equals d.Id into ed
                                   from newEd in ed.DefaultIfEmpty()

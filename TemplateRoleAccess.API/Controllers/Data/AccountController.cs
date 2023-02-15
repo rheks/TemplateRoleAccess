@@ -31,5 +31,18 @@ namespace TemplateRoleAccess.API.Controllers.Data
                 _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = "Login succeeded", Data = response }),
             };
         }
+        
+        [HttpPut]
+        [Route("Update-password")]
+        public virtual async Task<IActionResult> UpdatePassword(Account account)
+        {
+            var response = await _accountRepository.UpdatePassword(account);
+            return response switch
+            {
+                0 => StatusCode(400, new { Status = HttpStatusCode.BadRequest, message = "Password fail to update", Data = new List<Object> { } }),
+                1 => StatusCode(200, new { Status = HttpStatusCode.OK, message = "Password successfully updated", Data = new List<Object> { } }),
+                _ => StatusCode(500, new { Status = HttpStatusCode.InternalServerError, message = "Internal server error", Data = response }),
+            };
+        }
     }
 }
