@@ -27,10 +27,10 @@
 
         window.onload = function (e) {
             if (
-                sessionStorage.getItem("nik") == null ||
-                sessionStorage.getItem("email") == null ||
-                sessionStorage.getItem("name") == null ||
-                sessionStorage.getItem("token") == null
+                localStorage.getItem("nik") == null ||
+                localStorage.getItem("email") == null ||
+                localStorage.getItem("name") == null ||
+                localStorage.getItem("token") == null
             ) {
                 window.location.href = urlFrontend + "auth/login";
             }
@@ -74,11 +74,9 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -187,15 +185,15 @@
         let urlBackend = "https://localhost:7010/api";
         let urlFrontend = "https://localhost:7183/";
         
-        $("#showProfile").html(sessionStorage.getItem("name") + ` (${sessionStorage.getItem("role")})`)
+        $("#showProfile").html(localStorage.getItem("name"))
 
         function removeLSWithRedirect(){
-            sessionStorage.removeItem("nik")
-            sessionStorage.removeItem("email")
-            sessionStorage.removeItem("name")
-            sessionStorage.removeItem("role")
-            sessionStorage.removeItem("token")
-            sessionStorage.removeItem("expired")
+            localStorage.removeItem("nik")
+            localStorage.removeItem("email")
+            localStorage.removeItem("name")
+            localStorage.removeItem("role")
+            localStorage.removeItem("token")
+            localStorage.removeItem("expired")
 
             window.location.href = urlFrontend + "auth/login"
         }
@@ -209,13 +207,14 @@
         (TimeNow.getMinutes() < 10 ? "0" + TimeNow.getMinutes() : TimeNow.getMinutes()) + ":" +
         (TimeNow.getDate() < 10 ? "0" + TimeNow.getDate() : TimeNow.getDate())
         
-        var tokenExpired = sessionStorage.getItem("expired").slice(0, sessionStorage.getItem("expired").length - 14)
+        var tokenExpired = localStorage.getItem("expired").slice(0, localStorage.getItem("expired").length - 14)
         //console.log(formatLocalTime.toString())
 
         if (tokenExpired <= formatLocalTime.toString()){
             removeLSWithRedirect()
         }
     </script>
+    <script src="~/js/SidebarScript.js"></script>
 
     @RenderSection("Scripts", required: false)
 

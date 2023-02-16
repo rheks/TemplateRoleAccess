@@ -212,6 +212,9 @@ function Create() {
             "url": urlBackend + "/employee/register",
             "data": JSON.stringify(Employee),
             "contentType": "application/json;charset=utf-8",
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
                     Swal.fire({
@@ -276,6 +279,9 @@ function GetById(id) {
         "url": urlBackend + "/employee/SpecificDataEmployees/" + id,
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
+        "headers": {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
         "success": function (result) {
             var obj = result.data;
 
@@ -390,6 +396,9 @@ function Update() {
             "type": "PUT",
             "data": JSON.stringify(Employee),
             "contentType": "application/json; charset=utf-8",
+            "headers": {
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
             "success": (result) => {
                 if (result.status == 200 || result.status == 201) {
                     Swal.fire({
@@ -452,6 +461,9 @@ function Delete(id) {
         "url": urlBackend + "/employee/register/delete/" + id,
         "type": "DELETE",
         "dataType": "json",
+        "headers": {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        },
         "success": (result) => {
             if (result.status == 200 || result.status == 201) {
                 Swal.fire({

@@ -12,11 +12,11 @@
     <script>
         window.onload = function (e) {
             if (
-                sessionStorage.getItem("nik") != null ||
-                sessionStorage.getItem("email") != null ||
-                sessionStorage.getItem("name") != null ||
-                sessionStorage.getItem("role") != null ||
-                sessionStorage.getItem("token") != null
+                localStorage.getItem("nik") != null ||
+                localStorage.getItem("email") != null ||
+                localStorage.getItem("name") != null ||
+                localStorage.getItem("role") != null ||
+                localStorage.getItem("token") != null
             ) {
                 window.location.href = urlFrontend + "dashboard/index";
             }

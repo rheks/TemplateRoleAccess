@@ -1,4 +1,14 @@
-﻿$(document).ready(function () {
+﻿if (localStorage.getItem("role") == "Admin") {
+    $("#home-non-admin").hide();
+    $("#home-admin").show();
+}else if (localStorage.getItem("role") != "Admin") {
+    $("#home-admin").hide();
+    $("#home-non-admin").show();
+
+    $("#hello-user").html(`Hello, ${localStorage.getItem("name")} (${localStorage.getItem("nik")})`);
+}
+
+$(document).ready(function () {
     $('#tab-home').addClass("active")
 
     $.ajax({
@@ -7,7 +17,7 @@
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "headers": {
-            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
         },
         "success": function (result) {
             var obj = result.data;
@@ -25,7 +35,7 @@
         "contentType": "application/json; charset=utf-8",
         "dataType": "json",
         "headers": {
-            'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
         },
         "success": function (result) {
             var obj = result.data;

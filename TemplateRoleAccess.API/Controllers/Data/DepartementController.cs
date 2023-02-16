@@ -34,6 +34,45 @@ namespace TemplateRoleAccess.API.Controllers.Data
         }
 
         [HttpGet]
+        [Route("GetDepartementName/{nik}")]
+        //[Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> GetDepartementName(string nik)
+        {
+            var response = await _departementRepository.GetDepartementName(nik);
+            return response switch
+            {
+                null => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = new Object { } }),
+                _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"Data with nik {nik} found", Data = response.Value }),
+            };
+        }
+        
+        [HttpGet]
+        [Route("GetMyDepartement/{nik}")]
+        //[Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> GetMyDepartement(string nik)
+        {
+            var response = await _departementRepository.GetMyDepartement(nik);
+            return response switch
+            {
+                null => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = new Object { } }),
+                _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"Data with nik {nik} found", Data = response }),
+            };
+        }
+        
+        [HttpGet]
+        [Route("GetDataDepartement/{nik}")]
+        //[Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> GetDataDepartement(string nik)
+        {
+            var response = await _departementRepository.GetDataDepartement(nik);
+            return response switch
+            {
+                null => StatusCode(404, new { Status = HttpStatusCode.NotFound, message = "Data not found", Data = new Object { } }),
+                _ => StatusCode(200, new { Status = HttpStatusCode.OK, message = $"Data with nik {nik} found", Data = response.Value }),
+            };
+        }
+        
+        [HttpGet]
         [Route("GetDataManager")]
         //[Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> GetDataManager()

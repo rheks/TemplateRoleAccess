@@ -2,7 +2,7 @@
     $('#tab-profile').addClass("active")
 
     $.ajax({
-        "url": urlBackend + "/employee/SpecificDataEmployees/" + sessionStorage.getItem("nik"),
+        "url": urlBackend + "/employee/SpecificDataEmployees/" + localStorage.getItem("nik"),
         "type": "GET",
         "datatype": "json",
         "dataSrc": "data",
@@ -84,16 +84,7 @@ function Update() {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
-                        text: 'Data successfully updated',
-                    })
-
-                    $("#InputPassword").val("");
-                }
-                else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed',
-                        text: 'Data failed to update',
+                        text: result.message,
                     })
 
                     $("#InputPassword").val("");

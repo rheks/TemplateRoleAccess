@@ -10,7 +10,7 @@ $(document).ready(function () {
             "datatype": "json",
             "dataSrc": "data",
             "headers": {
-                'Authorization': 'Bearer ' + sessionStorage.getItem("token")
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
             },
             "error": (e) => {
                 document.querySelector("#DepartementsTable > tbody > tr > td").innerHTML = "Data Not Available";

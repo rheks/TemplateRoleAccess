@@ -35,7 +35,7 @@ namespace TemplateRoleAccess.API.Controllers.Data
 
         [HttpPost]
         [Route("Register")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register(RegisterEmployeeVM registerEmployeeVM)
         {
             var response = await _employeeRepository.Register(registerEmployeeVM);
@@ -51,6 +51,7 @@ namespace TemplateRoleAccess.API.Controllers.Data
 
         [HttpPut]
         [Route("Register/Update")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterUpdate(RegisterEmployeeVM registerEmployee)
         {
             var response = await _employeeRepository.RegisterUpdate(registerEmployee);
@@ -65,6 +66,7 @@ namespace TemplateRoleAccess.API.Controllers.Data
         
         [HttpDelete]
         [Route("Register/Delete/{nik}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterDelete([FromRoute] string nik)
         {
             var response = await _employeeRepository.RegisterDelete(nik);
@@ -78,7 +80,6 @@ namespace TemplateRoleAccess.API.Controllers.Data
         
         [HttpGet]
         [Route("SpecificDataEmployees")]
-        //[Authorize(Roles = "Admin, Manager")]
         public virtual async Task<IActionResult> GetSpecificEmployees()
         {
             var response = await _employeeRepository.GetSpecificEmployees();
@@ -92,7 +93,6 @@ namespace TemplateRoleAccess.API.Controllers.Data
         
         [HttpGet]
         [Route("SpecificDataEmployees/{nik}")]
-        //[Authorize(Roles = "Admin, Manager")]
         public virtual async Task<IActionResult> GetSpecificEmployees(string nik)
         {
             var response = await _employeeRepository.GetSpecificEmployees(nik);

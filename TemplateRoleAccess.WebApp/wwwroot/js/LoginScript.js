@@ -17,12 +17,12 @@
             if (result.status == 200 || result.status == 201) {
                 var response = result.data
 
-                sessionStorage.setItem("nik", response.nik)
-                sessionStorage.setItem("email", response.email)
-                sessionStorage.setItem("role", response.role)
-                sessionStorage.setItem("name", response.name)
-                sessionStorage.setItem("token", response.token)
-                sessionStorage.setItem("expired", response.tokenExpires)
+                localStorage.setItem("nik", response.nik)
+                localStorage.setItem("email", response.email)
+                localStorage.setItem("role", response.role)
+                localStorage.setItem("name", response.name)
+                localStorage.setItem("token", response.token)
+                localStorage.setItem("expired", response.tokenExpires)
 
                 window.location.href = urlFrontend + "dashboard/index";
             }
